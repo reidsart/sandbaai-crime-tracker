@@ -1,0 +1,56 @@
+/* Admin Styles for Sandbaai Crime Tracker */
+
+body.sandcrime-dashboard {
+    font-family: Arial, sans-serif;
+}
+
+.wrap {
+    margin: 20px;
+}
+
+.updated {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.wp-list-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.wp-list-table td, .wp-list-table th {
+    padding: 10px;
+}
+
+.wp-list-table a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.wp-list-table a:hover {
+    text-decoration: underline;
+}
+
+input.error, textarea.error {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+}
+
+button, input[type="submit"] {
+    background-color: #0073aa;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #005177;
+}
