@@ -1,0 +1,132 @@
+/* Toast Notifications */
+.notification-toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    width: calc(100% - 40px);
+}
+
+.notification-toast {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 12px;
+    margin-bottom: 10px;
+    transform: translateX(120%);
+    transition: transform 0.3s ease-out;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.notification-toast.show {
+    transform: translateX(0);
+}
+
+.notification-toast .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.notification-toast .toast-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+.notification-toast .toast-close {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    line-height: 1;
+}
+
+.notification-toast .toast-message {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Toast Types */
+.notification-toast.group_message {
+    border-left: 4px solid #1976d2;
+}
+
+.notification-toast.group_alert {
+    border-left: 4px solid #e53935;
+}
+
+.notification-toast.report {
+    border-left: 4px solid #43a047;
+}
+
+.notification-toast.system {
+    border-left: 4px solid #757575;
+}
+
+/* Notification Badge */
+.notification-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background-color: #e53935;
+    color: white;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.notification-badge:empty {
+    display: none;
+}
+
+/* Notification Animations */
+@keyframes notification-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes notification-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .notification-toast-container {
+        top: auto;
+        bottom: 20px;
+    }
+
+    .notification-toast {
+        margin-bottom: 0;
+        margin-top: 10px;
+    }
+}

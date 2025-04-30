@@ -1,0 +1,71 @@
+.sandcrime-report-form {
+    max-width: 800px;
+    margin: 2em auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sandcrime-report-form h3 {
+    margin: 1.5em 0 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #eee;
+}
+
+.sandcrime-report-form .form-group {
+    margin-bottom: 1.5em;
+}
+
+.sandcrime-report-form label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.sandcrime-report-form input[type="text"],
+.sandcrime-report-form input[type="datetime-local"],
+.sandcrime-report-form select,
+.sandcrime-report-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sandcrime-report-form textarea {
+    min-height: 120px;
+}
+
+.sandcrime-report-form .checkbox {
+    margin: 0.5em 0;
+}
+
+.sandcrime-report-form .checkbox label {
+    font-weight: normal;
+}
+
+.sandcrime-report-form .description {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+}
+
+.sandcrime-report-form .button {
+    margin-top: 1em;
+}
+
+.notice {
+    margin: 1em 0;
+    padding: 1em;
+    border-left: 4px solid #000;
+}
+
+.notice-success {
+    border-color: #46b450;
+    background: #fff;
+}
+
+.notice-error {
+    border-color: #dc3232;
+    background: #fff;
+}
