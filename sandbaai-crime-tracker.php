@@ -70,7 +70,8 @@ function sandcrime_create_tables() {
     $sql_groups = "CREATE TABLE $security_groups_table (
         id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         title VARCHAR(255) NOT NULL,
-        logo VARCHAR(255) DEFAULT NULL,
+        logo_id BIGINT(20) DEFAULT NULL,      /* Add this line */
+        logo_url VARCHAR(255) DEFAULT NULL,    /* Add this line */
         contact_numbers TEXT NOT NULL,
         email VARCHAR(100) DEFAULT NULL,
         address TEXT DEFAULT NULL,
