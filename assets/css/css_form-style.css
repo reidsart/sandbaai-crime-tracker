@@ -1,0 +1,70 @@
+/* Frontend Form Styles for Sandbaai Crime Tracker */
+
+#sandcrime-report-form {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#sandcrime-report-form h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+#sandcrime-report-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+#sandcrime-report-form input,
+#sandcrime-report-form select,
+#sandcrime-report-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#sandcrime-report-form input[type="file"] {
+    padding: 5px;
+}
+
+#sandcrime-report-form input:focus,
+#sandcrime-report-form select:focus,
+#sandcrime-report-form textarea:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 3px rgba(0, 115, 170, 0.5);
+}
+
+#sandcrime-report-form input.error,
+#sandcrime-report-form select.error,
+#sandcrime-report-form textarea.error {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+}
+
+#sandcrime-report-form button,
+#sandcrime-report-form input[type="submit"] {
+    background-color: #0073aa;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#sandcrime-report-form button:hover,
+#sandcrime-report-form input[type="submit"]:hover {
+    background-color: #005177;
+}
