@@ -190,3 +190,124 @@ function sandcrime_security_groups_page() {
     </div>
     <?php
 }
+
+function handle_group_member_actions() {
+    if (!isset($_POST['group_members_nonce']) || 
+        !wp_verify_nonce($_POST['group_members_nonce'], 'sandcrime_group_members')) {
+        return;
+    }
+
+    global $wpdb;
+
+    // Update group members
+    if (isset($_POST['member_group_id']) && isset($_POST['members'])) {
+        $group_id = absint($_POST['member_group_id']);
+        $members = array_map('absint', $_POST['members']);
+
+        // Remove existing members
+        $wpdb->delete(
+            "{$wpdb->prefix}sandcrime_group_members",
+            array('group_id' => $group_id),
+            array('%d')
+        );
+
+        // Add new members
+        foreach ($members as $user_id) {
+            $wpdb->insert(
+                "{$wpdb->prefix}sandcrime_group_members",
+                array(
+                    'group_id' => $group_id,
+                    'user_id' => $user_id,
+                    'added_by' => get_current_user_id(),
+                    'created_at' => current_time('mysql', true)
+                ),
+                array('%d', '%d', '%d', '%s')
+            );
+        }
+
+        add_settings_error(
+            'sandcrime_messages',
+            'sandcrime_members_updated',
+            __('Group members updated successfully.', 'sandcrime'),
+            'updated'
+        );
+    }
+}
+
+function handle_group_actions() {
+    if (!isset($_POST['security_group_nonce']) || 
+        !wp_verify_nonce($_POST['security_group_nonce'], 'sandcrime_security_group')) {
+        return;
+    }
+
+    global $wpdb;
+
+    // Add/Edit Group
+    if (isset($_POST['group_name'])) {
+        $group_id = isset($_POST['group_id']) ? absint($_POST['group_id']) : 0;
+        $name = sanitize_text_field($_POST['group_name']);
+        $description = sanitize_textarea_field($_POST['group_description']);
+        $enabled = isset($_POST['group_enabled']) ? 1 : 0;
+
+        $data = array(
+            'name' => $name,
+            'description' => $description,
+            'enabled' => $enabled,
+            'updated_at' => current_time('mysql', true)
+        );
+
+        if ($group_id) {
+            // Update existing group
+            $wpdb->update(
+                "{$wpdb->prefix}sandcrime_security_groups",
+                $data,
+                array('id' => $group_id),
+                array('%s', '%s', '%d', '%s'),
+                array('%d')
+            );
+            $message = __('Security group updated successfully.', 'sandcrime');
+        } else {
+            // Add new group
+            $data['created_at'] = current_time('mysql', true);
+            $wpdb->insert(
+                "{$wpdb->prefix}sandcrime_security_groups",
+                $data,
+                array('%s', '%s', '%d', '%s', '%s')
+            );
+            $message = __('Security group added successfully.', 'sandcrime');
+        }
+
+        add_settings_error(
+            'sandcrime_messages',
+            'sandcrime_group_updated',
+            $message,
+            'updated'
+        );
+    }
+
+    // Delete Group
+    if (isset($_POST['delete_group']) && isset($_POST['group_id'])) {
+        $group_id = absint($_POST['group_id']);
+        
+        // Delete group members first
+        $wpdb->delete(
+            "{$wpdb->prefix}sandcrime_group_members",
+            array('group_id' => $group_id),
+            array('%d')
+        );
+
+        // Delete the group
+        $wpdb->delete(
+            "{$wpdb->prefix}sandcrime_security_groups",
+            array('id' => $group_id),
+            array('%d')
+        );
+
+        add_settings_error(
+            'sandcrime_messages',
+            'sandcrime_group_deleted',
+            __('Security group deleted successfully.', 'sandcrime'),
+            'updated'
+        );
+    }
+}
