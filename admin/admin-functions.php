@@ -372,15 +372,25 @@ function handle_security_group_deletion() {
         $table_name = $wpdb->prefix . 'sandcrime_groups';
         $group_id = intval($_GET['id']);
         
+        // Get logo ID before deleting the group
+        $logo_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT logo_id FROM $table_name WHERE id = %d",
+            $group_id
+        ));
+
         $result = $wpdb->delete($table_name, ['id' => $group_id], ['%d']);
         
-        if ($result === false) {
+        if ($result !== false) {
+            // Delete the logo if it exists
+            if ($logo_id) {
+                wp_delete_attachment($logo_id, true);
+            }
+            wp_redirect(add_query_arg(['page' => 'sandcrime-security-groups', 'deleted' => '1'], admin_url('admin.php')));
+            exit;
+        } else {
             add_action('admin_notices', function() {
                 echo '<div class="notice notice-error is-dismissible"><p>Error deleting security group.</p></div>';
             });
-        } else {
-            wp_redirect(add_query_arg(['page' => 'sandcrime-security-groups', 'deleted' => '1'], admin_url('admin.php')));
-            exit;
         }
     }
 }
@@ -406,7 +416,7 @@ function sandcrime_security_groups_page() {
         <!-- Add/Edit Security Group Form -->
         <div class="card">
             <h2><?php echo $editing_group ? 'Edit Security Group' : 'Add New Security Group'; ?></h2>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <?php wp_nonce_field('sandcrime_security_group_action', 'sandcrime_security_group_nonce'); ?>
                 <?php if ($editing_group): ?>
                     <input type="hidden" name="group_id" value="<?php echo esc_attr($editing_group->id); ?>">
@@ -418,6 +428,20 @@ function sandcrime_security_groups_page() {
                         <td>
                             <input type="text" id="title" name="title" class="regular-text" required 
                                 value="<?php echo $editing_group ? esc_attr($editing_group->title) : ''; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="logo">Logo</label></th>
+                        <td>
+                            <?php if ($editing_group && !empty($editing_group->logo_url)): ?>
+                                <div class="current-logo">
+                                    <img src="<?php echo esc_url($editing_group->logo_url); ?>" 
+                                         style="max-width: 150px; margin-bottom: 10px;" alt="Current logo">
+                                    <br>
+                                </div>
+                            <?php endif; ?>
+                            <input type="file" id="logo" name="logo" accept="image/*">
+                            <p class="description">Recommended size: 300x300 pixels. Maximum file size: 2MB.</p>
                         </td>
                     </tr>
                     <tr>
@@ -438,9 +462,14 @@ function sandcrime_security_groups_page() {
                     <tr>
                         <th><label for="website">Website</label></th>
                         <td>
-                            <input type="url" id="website" name="website" class="regular-text" 
-                                placeholder="https://"
-                                value="<?php echo $editing_group ? esc_url($editing_group->website) : ''; ?>">
+                            <input type="text" id="website" name="website" class="regular-text" 
+                                placeholder="www.example.com"
+                                value="<?php 
+                                    if ($editing_group && $editing_group->website) {
+                                        echo esc_attr(preg_replace("~^(?:f|ht)tps?://~i", "", $editing_group->website));
+                                    }
+                                ?>">
+                            <p class="description">Enter website address with or without http://</p>
                         </td>
                     </tr>
                     <tr>
@@ -482,6 +511,7 @@ function sandcrime_security_groups_page() {
                 <table class="wp-list-table widefat fixed striped">
                     <thead>
                         <tr>
+                            <th style="width: 60px;">Logo</th>
                             <th>Name</th>
                             <th>Contact Numbers</th>
                             <th>Email</th>
@@ -493,6 +523,12 @@ function sandcrime_security_groups_page() {
                     <tbody>
                         <?php foreach ($groups as $group): ?>
                             <tr>
+                                <td>
+                                    <?php if (!empty($group->logo_url)): ?>
+                                        <img src="<?php echo esc_url($group->logo_url); ?>" 
+                                             style="max-width: 50px; height: auto;" alt="Group logo">
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo esc_html($group->title); ?></td>
                                 <td><?php echo esc_html($group->contact_numbers); ?></td>
                                 <td><?php echo esc_html($group->email); ?></td>
