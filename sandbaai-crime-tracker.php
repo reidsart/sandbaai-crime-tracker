@@ -33,6 +33,8 @@ add_action('plugins_loaded', function() {
 
 // Include utilities file first
 require_once SANDCRIME_PLUGIN_DIR . 'includes/utilities.php';
+require_once SANDCRIME_PLUGIN_DIR . 'admin/security-groups/security-groups-page.php';
+require_once SANDCRIME_PLUGIN_DIR . 'admin/security-groups/ajax-handlers.php';
 
 // Activation hook
 register_activation_hook(__FILE__, 'sandcrime_activate');
